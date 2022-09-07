@@ -34,7 +34,6 @@ carte_mensuelle = False
 carte_membre = False
 carte_etudiant = False
 forfait_famille = False
-# prix_billet = 10
 
 # demande des informations
 carte_mensuelle = input("Possédez-vous une carte mensuelle ? (Oui/Non) ").lower() == "oui"
