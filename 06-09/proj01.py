@@ -1,25 +1,5 @@
 """
-Objectif
-Programme simulant un distributeur de boissons
-Consignes
-➢ Réaliser un Distributeur de boissons
-➢ La solution devra se présenter comme l’exemple de sortie ci-dessous.
-➢ Sauvegarder sous le nom CS_Fevrier_Nom_Prenom_Classe_groupe
-Données
-- Un montant entré par l’utilisateur
-- Un numéro d’article entré par l’utilisateur
-Indications
-Le distributeur comporte :
-- Eau à 1.90 €
-- Coca-cola à 2.90 €
-- Fanta à 2.00 €
-- Ice Tea à 3.30 €
-- Chips paprika à 1.20 €
-- Fromage à 1.90 €
-Résultats
-- Un message confirmant ou annulant la transaction
-- Un message indiquant la monnaie rendue si existante
-- Un message indiquant le produit vendu et souhaitant un une bonne santé/appétit !
+https://classroom.google.com/c/NTQ0NzM5ODU4OTg5/a/NTQ1MzQ1NTUwODY2/details
 """
 
 
