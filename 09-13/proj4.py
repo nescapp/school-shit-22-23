@@ -26,13 +26,13 @@ celui de la panne).
 """
 essance = 32.5
 consommation = 5.0
-distance = int(input("Entrer la distance de votre destination ou entrer 0 pour faire le plain"))
+distance = int(input("Entrer la distance de votre destination ou entrer 0 pour faire le plain : "))
 
 if distance == 0:
     print("Vous avez fait le plein")
     print(f"Vous avez {essance} litres d'essance")
 else:
-    personne = int(input("Entrer le nombre de personne"))
+    personne = int(input("Entrer le nombre de personne : "))
 
     # Calcul de la consommation
     consommation = consommation + (consommation * (personne * 0.3))
