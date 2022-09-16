@@ -1,0 +1,1 @@
+distance = int(input("Entrer la distance de votre destination ou entrer 0 pour faire le plain"))
