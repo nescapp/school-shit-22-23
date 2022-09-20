@@ -16,9 +16,9 @@ def Verify_input(prompt, min, max):
 
 def Loterie(gain:int):
     global nombre_chiffres, val_max
-    if input("Appuyez sur entrée pour jouer ou écrivez 'exit' pour quitter : ").lower() == "":
-        nombre_chiffres = Verify_input("Entrez le nombre de chiffres à cocher : ", 2, 7)
-        val_max = Verify_input("Entrez la valeur maximum des chiffres à cocher : ", 10, 50)
+    if input("Appuyez sur entrée pour jouer ou écrivez 'exit' pour quitter : ").lower() != "exit":
+        nombre_chiffres = Verify_input("Entrez le nombre de chiffres à cocher : ", 2, 10)
+        val_max = Verify_input("Entrez la valeur maximum des chiffres à cocher : ", 5, 50)
         ticket_joueur = Tirage_ticket()
         ticket_gagnant = Tirage_ticket()
         print("------------------------------")
