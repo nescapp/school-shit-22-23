@@ -1,30 +1,34 @@
 import random
 
-def Verify_input(prompt, max):
+def Verify_input(prompt, min, max):
     inp = (input(prompt))
     try :
         inp = int(inp)
-        if inp > max: # ????
-            print("Veuillez entrer une valeur inférieure à", max)
-            return Verify_input(prompt, max)
+        if inp > max or inp < min: # ????
+            print("Veuillez entrer un nombre entre", min, "et", max)
+            return Verify_input(prompt, min, max)
     except ValueError:
         print("entrée invalide")
+        return Verify_input(prompt, min, max)
+    return inp
 
 
 
 def Loterie(gain:int):
     global nombre_chiffres, val_max
-    if input("Appuyez sur entrée pour jouer ou écrivez 'exit' pour quitter : ").lower() != "exit":
-        nombre_chiffres = int(input("Entrez le nombre de chiffres à cocher : "))
-        val_max = int(input("Entrez la valeur maximum des chiffres à cocher : "))
+    if input("Appuyez sur entrée pour jouer ou écrivez 'exit' pour quitter : ").lower() == "":
+        nombre_chiffres = Verify_input("Entrez le nombre de chiffres à cocher : ", 2, 7)
+        val_max = Verify_input("Entrez la valeur maximum des chiffres à cocher : ", 10, 50)
         ticket_joueur = Tirage_ticket()
         ticket_gagnant = Tirage_ticket()
+        print("------------------------------")
         print("Votre ticket :", ticket_joueur)
         print("Ticket gagnant :", ticket_gagnant)
+        print("------------------------------")
         if Gagnant(ticket_joueur, ticket_gagnant):
             print("Vous avez remporté le prix de", "{:,}".format(gain), "€ !!! Félicitation !!")
         else:
-            print("Vous n'avez pas remporté le grand prix de", "{:,}".format(gain), "€. Vous aurez plus de chance la prochaine fois. Vous aviez {Calcul_probabilite()}% de chance de remporter le gros lot.")
+            print("Vous n'avez pas remporté le grand prix de", "{:,}".format(gain), f"€. Vous aurez plus de chance la prochaine fois. Vous aviez {Calcul_probabilite()}% de chance de remporter le gros lot.")
             Loterie(gain*2)
             
     else:
