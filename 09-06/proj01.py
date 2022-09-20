@@ -1,8 +1,3 @@
-"""
-https://classroom.google.com/c/NTQ0NzM5ODU4OTg5/a/NTQ1MzQ1NTUwODY2/details
-"""
-
-
 # articles (article, prix)
 articles = [
     ["Eau", 1.90],

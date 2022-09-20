@@ -1,6 +1,3 @@
-"""
-https://classroom.google.com/c/NTQ0NzM5ODU4OTg5/a/NTQ1ODQxMzE2OTIx/details
-"""
 # Début du programme
 carte_mensuelle = False
 carte_membre = False

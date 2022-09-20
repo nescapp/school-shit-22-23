@@ -1,7 +1,3 @@
-"""
-https://classroom.google.com/c/NTQ0NzM5ODU4OTg5/a/NDg5NjA1NDI1MTIw/details
-"""
-
 def getinfo(Prompt): # Fonction qui permet de récupérer une information
     while True:
         try:
