@@ -1,51 +1,52 @@
 import random
 
-def main():
+def main(): 
     deck = []
-    for suit in ['H', 'D', 'S', 'C']:
+    for suit in ['H', 'D', 'S', 'C']: # Hearts, Diamonds, Spades, Clubs
         for value in range(1, 14):
             deck.append((suit, value))
-    random.shuffle(deck)
+    random.shuffle(deck) # shuffle the deck
     player = []
     dealer = []
-    for _ in range(2):
+    for i in range(2): # deal two cards to each player
         player.append(deck.pop())
         dealer.append(deck.pop())
     print("Player: ", player)
     print("Dealer: ", dealer)
     while True:
-        total = sum([card[1] for card in player])
-        if total > 21:
+        total = sum([card[1] for card in player]) # sum the values of the cards
+        if total > 21: # if the total is over 21, the player has busted
             print("Bust!")
             break
-        print("Total: ", total)
-        choice = input("Hit or stay? ")
-        if choice == "hit":
+        print("Total: ", total) # print the total
+        
+        choice = input("Hit or stay? ") # ask the player if they want to hit or stay
+        if choice == "hit": # if they want to hit, deal them another card
             player.append(deck.pop())
-        else:
+        else: # if they want to stay, break out of the loop
             break
     while True:
         total = sum([card[1] for card in dealer])
         if total > 21:
             print("Bust!")
             break
-        if total >= 17:
+        if total >= 17: # if the dealer has 17 or more, they must stay
             break
         dealer.append(deck.pop())
     print("Player: ", player)
     print("Dealer: ", dealer)
-    player_total = sum([card[1] for card in player])
+    player_total = sum([card[1] for card in player]) # sum the values of the cards
     dealer_total = sum([card[1] for card in dealer])
-    if player_total > 21:
+    if player_total > 21: # if the player has busted, the dealer wins
         print("Dealer wins!")
-    elif dealer_total > 21:
+    elif dealer_total > 21: # if the dealer has busted, the player wins
         print("Player wins!")
-    elif player_total > dealer_total:
+    elif player_total > dealer_total: # if the player has a higher total, the player wins
         print("Player wins!")
-    elif dealer_total > player_total:
+    elif dealer_total > player_total: # if the dealer has a higher total, the dealer wins
         print("Dealer wins!")
     else:
-        print("Tie!")
+        print("Tie!") # if the totals are the same, it's a tie
 
-if __name__ == "__main__":
+if __name__ == "__main__": # call the main function if the program is run directly (not imported)
     main()
