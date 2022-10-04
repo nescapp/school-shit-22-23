@@ -12,17 +12,21 @@ print("Bienvenue, Voici notre selection de produits : ")
 print("- - - - - - - - - - - - - - - - -")
 # affichage des articles
 for group in articles:
-    print(f"{articles.index(group) + 1}. {group[0]} : {'{:.2f}'.format(group[1])} €")  # affiche 2 décimales après la virgule
+    # affiche 2 décimales après la virgule
+    print(
+        f"{articles.index(group) + 1}. {group[0]} : {'{:.2f}'.format(group[1])} €")
 
 print("- - - - - - - - - - - - - - - - -")
 monnaie = float(input("Veuillez introduire votre monnaie : "))
 produit = int(input("Veuillez selectionner un produit : "))
-monnaierendue = round(monnaie-articles[produit-1][1], 2)  # calcul de la monnaie à rendre avec arrondis
+# calcul de la monnaie à rendre avec arrondis
+monnaierendue = round(monnaie-articles[produit-1][1], 2)
 if monnaierendue < 0:
     print("monnaie insuffisante")  # vérifie si la monnaie est suffisante
     print(f"Monnaie à rendre : {'{:.2f}'.format(monnaie)} €")
 else:
     print(f"Produit sélectionné : {articles[produit - 1][0]}")
     if monnaierendue != 0:
-        print(f"Monnaie à rendre : {'{:.2f}'.format(monnaierendue)} €")  # n'affiche pas la monnaie à rendre si elle est nulle
+        # n'affiche pas la monnaie à rendre si elle est nulle
+        print(f"Monnaie à rendre : {'{:.2f}'.format(monnaierendue)} €")
     print("Servi, bonne santé")
