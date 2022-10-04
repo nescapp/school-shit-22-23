@@ -1,10 +1,9 @@
-def getinfo(Prompt):  # Fonction qui permet de récupérer une information
+def getinfo(Prompt): # Fonction qui permet de récupérer une information
     while True:
         try:
             return int(input(Prompt))
         except ValueError:
             print("Erreur - Veuillez entrer un nombre entier")
-
 
 age = getinfo("Entrer l'age : ")
 anne_permis = getinfo("Entrer le nombre d'annees de permis : ")
