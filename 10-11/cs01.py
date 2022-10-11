@@ -58,10 +58,10 @@ def main():
     Bienvenue dans le gestionnaire de stock de chaussures
     
     1 : Afficher les articles pour une pointure
-    2 : Afficher les articles présents plusieurs fois / pas encore fait
+    2 : Afficher les articles présents plusieurs fois
     3 : Afficher les articles pour chaque pointure
     4 : Afficher la pointure la plus présente
-    5 : Afficher le nombre de fois la pointure la plus présente / pas encore fait
+    5 : Afficher le nombre de fois la pointure la plus présente
     6 : Afficher l’article le plus cher
     0 : Quitter le programme
 
@@ -81,8 +81,11 @@ def main():
         input("\nAppuyez sur Entrée pour continuer...")
         main()
     elif choix == 2:
-        print("Afficher les articles présents plusieurs fois")
-        print(" - pas encore fait")
+        frequence_article = []
+        for i in range(1, len(stock)):
+            frequence_article.append(stock[i][0])
+        print(f"L'article le plus présent est l'article '{max(set(frequence_article), key=frequence_article.count)}'")
+        
         input("\nAppuyez sur Entrée pour continuer...")
         main()
     elif choix == 3:
@@ -104,8 +107,14 @@ def main():
         input("\nAppuyez sur Entrée pour continuer...")
         main()
     elif choix == 5:
-        print("Afficher le nombre de fois la pointure la plus présente")
-        print(" - pas encore fait")
+        frequence_article = []
+        for i in range(1, len(stock)):
+            frequence_article.append(stock[i][0])
+        print(f"L'article le plus présent ('{max(set(frequence_article), key=frequence_article.count)}') apparait {frequence_article.count(max(set(frequence_article), key=frequence_article.count))} fois")
+        
+        input("\nAppuyez sur Entrée pour continuer...")
+        main()
+        
         input("\nAppuyez sur Entrée pour continuer...")
         main()
     elif choix == 6:
