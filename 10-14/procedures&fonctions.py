@@ -1,39 +1,3 @@
-"""
-
-1. Écrire une application demandant à l'utilisateur de répondre aux différentes questions par
-
-un oui ou par un non.
-
-Vous devez dès lors, créer une seule fonction permettant de renvoyer la réponse à l'écran à
-
-chaque question demandée à l'utilisateur.
-
-Les questions sont les suivantes :
-
-Partez-vous en vacance cet été ?
-
-Partez-vous en avion ?
-
-Avez-vous des enfants ?
-
-Avez-vous des animaux domestiques ?
-
-
-2. Créer une application dans laquelle la fonction renvoie la multiplication de cinq nombres
-
-fournis en argument.
-
-Les nombres devront être fournis par l'utilisateur dans le programme principal.
-
-
-3. Créer une application dans laquelle la fonction renvoie le nombre de consonnes contenues
-
-dans une chaîne de caractères passée en argument.
-
-Les consonnes devront être fournies par l'utilisateur dans le programme principal.
-"""
-
-
 def question(prompt:str):
 
     while True:

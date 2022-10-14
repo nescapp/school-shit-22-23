@@ -1,5 +1,4 @@
 stock = [
-    ["Article", "Pointure", "Prix"],
     ["Asics Gel 2000", 42, 119],
     ["Asics Gel 2000", 39, 119],
     ["Mizuno Wave Rider", 38, 129],
@@ -38,10 +37,12 @@ def main():
         input("\nAppuyez sur Entrée pour continuer...")
         main()
     elif choix == 2:
-        frequence_article = []
+        # print all articles with more than one size
         for i in range(1, len(stock)):
-            frequence_article.append(stock[i][0])
-        print(f"L'article le plus présent est l'article '{max(set(frequence_article), key=frequence_article.count)}'")
+            if stock[i][0] == stock[i-1][0]:
+                print(f"{stock[i][0]} ({stock[i][1]}) \t {stock[i][2]}€")
+            if stock[i][0] == stock[i-1][0] and stock[i][0] != stock[i-2][0]:
+                print(f"{stock[i-1][0]} ({stock[i-1][1]}) \t {stock[i-1][2]}€")
         
         input("\nAppuyez sur Entrée pour continuer...")
         main()
@@ -56,7 +57,6 @@ def main():
     elif choix == 4:
         print("Afficher la pointure la plus présente")
         print(" - - - - - - - - - - - - - - - - - - - ")
-        # TODO : UTILISER DICTIONNAIRE
         frequence_pointure = []
         for i in range(1, len(stock)):
             frequence_pointure.append(stock[i][1])
