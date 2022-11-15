@@ -10,4 +10,5 @@ t = [1, 2, 3, 4, 5]
 print(*t)
 
 # print large numbers with commas
-print("{:,}".format(1000000000))
+a = 1_000_000_000
+print(f'{a:,}')
