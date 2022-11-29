@@ -16,12 +16,12 @@ class Grid: # Class for the grid
         for row in range(self.rows):
             current_row = []
             for col in range(self.cols): # loop to create the cells
-                cell = tk.Canvas(self.master, width=50, height=50, bg="green", highlightthickness=2)
+                cell = tk.Canvas(self.master, width=60, height=60, bg="#33AA33", highlightthickness=3 , highlightbackground="#555555")
                 cell.grid(row=row, column=col, padx=5, pady=5)
                 cell.bind("<Button-1>", self.add_house) # bind the click event to the change_color method
                 current_row.append(cell) # add the cell to the current row
                 if random.randint(0, 1) == 1: # 50% chance of a tree
-                    cell.create_text(25, 25, text="🌳", font=("Arial", 20), fill="darkgreen")
+                    cell.create_text(30, 30, text="🌳", font=("Arial", 30), fill="#228822")
                 # color text green
             self.cells.append(current_row)
 
@@ -30,14 +30,13 @@ class Grid: # Class for the grid
 
         cell = event.widget
         if temp_houses_owned < 5:
-            cell["bg"] = "lightgrey"
+            cell["bg"] = "#999999"
             temp_houses_owned += 1 # add 1 to temp_houses_owned
-            cell.unbind("<Button-1>") # unbind the click event
             cell.bind("<Button-1>", self.remove_house)
             # remove the tree
             cell.delete("all") # delete all items in the cell
-            cell.create_text(25, 25, text="🏠", font=("Arial", 20), fill="#555555") # add a house
-            # cell.create_text(25, 25, text="🏠", font=("Arial", 20), fill="#"+("%06x"%random.randint(0,16777215))) # random color
+            cell.create_text(30, 30, text="🏠", font=("Arial", 30), fill="#555555") # add a house
+            # cell.create_text(30, 30, text="🏠", font=("Arial", 20), fill="#"+("%06x"%random.randint(0,16777215))) # random color
             temp_houses.append(cell)
         else:
             messagebox.showinfo("Error", "You can only own 5 houses")
@@ -47,13 +46,12 @@ class Grid: # Class for the grid
 
         cell = event.widget
         if temp_houses_owned > 0:
-            cell["bg"] = "green"
+            cell["bg"] = "#33AA33"
             temp_houses_owned -= 1
-            cell.unbind("<Button-1>")
             cell.bind("<Button-1>", self.add_house)
             cell.delete("all")
             if random.randint(0, 1) == 1: # 50% chance of a tree
-                    cell.create_text(25, 25, text="🌳", font=("Arial", 20), fill="darkgreen")
+                    cell.create_text(30, 30, text="🌳", font=("Arial", 30), fill="#228822")
 
 
 
@@ -63,7 +61,7 @@ class Grid: # Class for the grid
 root = tk.Tk() # create the window
 root.title("Plan") # set the title
 root.resizable(False, False) # prevent resizing
-root.configure(bg="#8a8780") # set the background color
+root.configure(bg="#333333") # set the background color
 
 grid = Grid(root, 10, 10) # create the grid with 10 rows and 10 columns
 confirmButton = tk.Button(root, text="✓ Confirmer",font=("Arial", 12), command=root.destroy) # create the confirm button
