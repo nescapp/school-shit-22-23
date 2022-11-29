@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import messagebox
 import random
-houses_owned = 0
-houses = []
+temp_houses_owned = 0
+temp_houses = []
+
 class Grid: # Class for the grid
     def __init__(self, master, rows, cols):
         self.master = master
@@ -25,30 +26,29 @@ class Grid: # Class for the grid
             self.cells.append(current_row)
 
     def add_house(self, event): # method to change the color of the cell
-        global houses_owned
+        global temp_houses_owned
 
         cell = event.widget
-        if houses_owned < 5:
+        if temp_houses_owned < 5:
             cell["bg"] = "lightgrey"
-            print(houses_owned)
-            houses_owned += 1 # add 1 to houses_owned
+            temp_houses_owned += 1 # add 1 to temp_houses_owned
             cell.unbind("<Button-1>") # unbind the click event
             cell.bind("<Button-1>", self.remove_house)
             # remove the tree
             cell.delete("all") # delete all items in the cell
-            cell.create_text(25, 25, text="🏠", font=("Arial", 20), fill="grey") # add a house
-            houses.append(cell)
+            cell.create_text(25, 25, text="🏠", font=("Arial", 20), fill="#555555") # add a house
+            # cell.create_text(25, 25, text="🏠", font=("Arial", 20), fill="#"+("%06x"%random.randint(0,16777215))) # random color
+            temp_houses.append(cell)
         else:
             messagebox.showinfo("Error", "You can only own 5 houses")
     
     def remove_house(self, event):
-        global houses_owned
+        global temp_houses_owned
 
         cell = event.widget
-        if houses_owned > 0:
+        if temp_houses_owned > 0:
             cell["bg"] = "green"
-            print(houses_owned)
-            houses_owned -= 1
+            temp_houses_owned -= 1
             cell.unbind("<Button-1>")
             cell.bind("<Button-1>", self.add_house)
             cell.delete("all")
@@ -64,8 +64,9 @@ root = tk.Tk() # create the window
 root.title("Plan") # set the title
 root.resizable(False, False) # prevent resizing
 root.configure(bg="#8a8780") # set the background color
+
 grid = Grid(root, 10, 10) # create the grid with 10 rows and 10 columns
 confirmButton = tk.Button(root, text="✓ Confirmer",font=("Arial", 12), command=root.destroy) # create the confirm button
 confirmButton.grid(row=10, column=0, columnspan=10, sticky="we") # add the button to the window
 root.mainloop() # start the program
-print(houses)
+print(temp_houses)
