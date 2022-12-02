@@ -44,8 +44,9 @@ class Grid:
                 cell.bind("<Button-1>", self.add_house)
                 current_row.append(cell)
                 if random.randint(0, 1) == 1:
-                    cell.create_text(30, 30, text="🌳", font=("Arial", 30), fill="#228822")
+                    cell.create_text(30, 30, text="🌳", font=("Arial", 30), fill="#228822")                
             self.cells.append(current_row)
+            
     def add_house(self, event):
         """Method to create a house."""
         global temp_houses_owned
@@ -53,10 +54,10 @@ class Grid:
         cell = event.widget
         if temp_houses_owned < 5:
             cell["bg"] = "#999999"
-            temp_houses_owned += 1 # add 1 to temp_houses_owned
+            temp_houses_owned += 1
             cell.bind("<Button-1>", self.remove_house)
-            # remove the tree
-            cell.delete("all") # delete all items in the cell
+            # delete everything in the cell
+            cell.delete("all") 
             cell.create_text(30, 30, text="🏠", font=("Arial", 30), fill="#555555") # add a house
             # cell.create_text(30, 30, text="🏠", font=("Arial", 20), fill="#"+("%06x"%random.randint(0,16777215))) # random color
             temp_houses.append(cell)
@@ -72,10 +73,11 @@ class Grid:
             cell["bg"] = "#33AA33"
             temp_houses_owned -= 1
             cell.bind("<Button-1>", self.add_house)
+            # delete everything in the cell
             cell.delete("all")
-            temp_houses.remove(cell)
             if random.randint(0, 1) == 1: # 50% chance of a tree
                     cell.create_text(30, 30, text="🌳", font=("Arial", 30), fill="#228822")
+            temp_houses.remove(cell)
 
         
 # initialize the window
