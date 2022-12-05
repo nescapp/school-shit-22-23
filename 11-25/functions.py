@@ -16,32 +16,25 @@ def mention_moyenne(moyenne:float):
         return "Excellent"
     
 def list_numbers(N:int):
-    numbers = []
-    reverse_numbers = []
-    print("croissant : ", end=" ")
-    for i in range(N):
-        print(i, end=" ")
-        numbers.append(i)
-    print("\n", end="")
-    print("décroissant : ", end=" ")
-    for i in reversed(range(N)):
-        print(i, end=" ")
-        reverse_numbers.append(i)
-    print("\n", end="")
+    numbers = [i for i in range(N)]
+    reverse_numbers = [i for i in reversed(range(N))]
+    print("croissant :", *numbers)
+    # for i in range(N):
+    #     print(i, end=" ")
+    #     numbers.append(i)
+    print("décroissant : ", *reverse_numbers)
+    # for i in reversed(range(N)):
+    #     print(i, end=" ")
+    #     reverse_numbers.append(i)
     return numbers, reverse_numbers
 
 def list_even_numbers(N:int):
-    even_numbers = []
-    for i in range(N):
-        if i % 2 == 0:
-            even_numbers.append(i)
+    even_numbers = [i for i in range(N) if i % 2 == 0]
     return even_numbers
 
 def longest_name(names:list):
     longest_name = names[0]
-    for name in names:
-        if len(name) > len(longest_name):
-            longest_name = name
+    longest_name = max(names, key=len)
     return longest_name
 
 print(convert_temp(0))

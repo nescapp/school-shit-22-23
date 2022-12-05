@@ -36,19 +36,13 @@ def Loterie(gain:int): # fonction principale
 
 
 def Tirage_ticket(): # fonction qui tire un ticket
-    ticket = []
-    for i in range(nombre_chiffres):
-        ticket.append(random.randint(1, val_max))
+    ticket = [random.randint(1, val_max) for i in range(nombre_chiffres)] # on tire un nombre aléatoire entre 1 et val_max pour chaque chiffre du ticket        
     ticket.sort()
     return ticket
 
 
 def Gagnant(ticket_utilisateur:list, ticket_gagnant:list):
-    if ticket_utilisateur == ticket_gagnant:
-        return True
-    else:
-        return False
-
+    return True if ticket_utilisateur == ticket_gagnant else False
 
 def Calcul_probabilite(): # jsp comment calculer la probabilité
     return 0

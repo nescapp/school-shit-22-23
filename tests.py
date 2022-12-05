@@ -12,3 +12,7 @@ print(*t)
 # print large numbers with commas
 a = 1_000_000_000
 print(f'{a:,}')
+
+# list comprehension
+numbers = [i for i in range(100)]
+print(numbers)
