@@ -7,6 +7,9 @@ class Papillon:
         self.poids = poids
         self.taille = taille
         print(f"{self.nom} est un Papillon.") # Affiche un message de création
+        print(f"{self.nom} pond {self.oeufs} oeufs.")
+        print(f"{self.nom} pèse {self.poids} grammes.")
+        print(f"{self.nom} mesure {self.taille} cm.")
 
     def respirer(self):
         print(f"{self.nom} respire.")
