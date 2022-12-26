@@ -19,13 +19,7 @@ def list_numbers(N:int):
     numbers = [i for i in range(N)]
     reverse_numbers = [i for i in reversed(range(N))]
     print("croissant :", *numbers)
-    # for i in range(N):
-    #     print(i, end=" ")
-    #     numbers.append(i)
     print("décroissant : ", *reverse_numbers)
-    # for i in reversed(range(N)):
-    #     print(i, end=" ")
-    #     reverse_numbers.append(i)
     return numbers, reverse_numbers
 
 def list_even_numbers(N:int):
