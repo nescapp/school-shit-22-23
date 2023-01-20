@@ -16,6 +16,7 @@ class Facture:
 facture1 = Facture("01/01/2020", "Jean", ["Brocoli", "Mandarine"], 10)
 facture2 = Facture("02/01/2020", "Pierre", ["Jus d'orange", "Pain", "Chips"], 15)
 facture3 = Facture("03/01/2020", "Paul", ["Chocolat", "Chips", "Coca", "Pain"], 20)
+facture4 = Facture("04/01/2020", "Jacques", ["Chocolat", "Chips", "Coca", "Pain"], 20)
 
 print(facture1)
 print(facture2)
