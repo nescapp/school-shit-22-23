@@ -1,4 +1,6 @@
 import pygame
+# bonne chance pour installer pygame
+# j'ai utilisé python 3.10
 
 # Initialize pygame
 pygame.init()
