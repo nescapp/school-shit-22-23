@@ -1,0 +1,37 @@
+essayer de comprendre challenge
+
+Une compagnie crée 3 sortes de boules de pétanque selon le poste du joueur :
+- Si vous êtes tireur : Les boules de pétanque sont situées dans une fourchette de poids
+comprise entre 670 g et 700 g.
+- Si vous êtes pointeur : Les boules de pétanque sont situées dans une fourchette de
+poids comprise entre 710 g et 730 g.
+- Si vous êtes milieu : Les boules de pétanque sont situées dans une fourchette de poids
+comprise entre 680 g et 720 g.
+Appliquer la formule permettant de calculer le masse de la boule.
+Masse = Densité * Volume
+
+Volume=4/3(π.R3
+)
+Diamètre : 13 à 76 mm
+Densité : 0.0027kg/cm3
+Consignes :
+Réalisez le programme qui permet de calculer la masse de 3 boules de pétanque selon le poste du
+joueur qui sera spécifier à l’affichage :
+
+➢ Déclarer une classe nommée BoulesDePetanque ;
+➢ Créer les attributs caractérisant la boule de pétanque ;
+➢ Créer le constructeur ;
+➢ Créer les getters et setters afin de protéger les données de l’ingérence malvenue de
+l’extérieur ;
+
+2
+
+➢ Créer 3 instances ;
+➢ Créer une fonction d’affichage utilisant la méthode spéciale __str__() affichant
+caractéristiques des 3 boules de pétanque selon le poste du joueur.
+L’affichage doit être explicite.
+➢ Modifier le diamètre et le masse d’une des boules de pétanques à l’aide des getters et
+setters
+➢ Afficher de manière explicite les caractéristiques de la boule de pétanque qui ont été
+modifiée
+➢ Commenter le code.
