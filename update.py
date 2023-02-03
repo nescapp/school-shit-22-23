@@ -17,8 +17,8 @@ def find_latest():
 
 def rename_dir():
     latest = find_latest()
-    if not latest.endswith(' - 🚩 latest'):
-        os.rename(latest, f'{latest} - 🚩 latest')
+    if not latest.endswith(' - latest'):
+        os.rename(latest, f'{latest} - latest')
         print('Directory already exists')
 
         try:
@@ -27,12 +27,12 @@ def rename_dir():
             old_latest = ''
             print('No previous latest directory found')
 
-        if os.path.exists(f'{old_latest} - 🚩 latest'):
-            os.rename(f'{old_latest} - 🚩 latest', old_latest)
+        if os.path.exists(f'{old_latest} - latest'):
+            os.rename(f'{old_latest} - latest', old_latest)
         
         with open ('update.json', 'w') as f:
             json.dump(latest, f)
-        print(f'Renamed directory to {latest} - 🚩 latest')
+        print(f'Renamed directory to {latest} - latest')
     
     else:
         print('Directory already exists')
