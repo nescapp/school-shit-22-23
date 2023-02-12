@@ -1,8 +1,8 @@
-import random # Importation du module random
+import random # Importation du module random, pour générer les attributs de la boule de pétanque
 
 class BoulesDePetanque:
-    """Classe permettant de créer des boules de pétanque"""
-    def __init__(self, player):
+    """Classe permettant de générer une boule de pétanque pour le joueur demandé."""
+    def __init__(self, player, diametre):
         # Définition des attributs
         if player == "tireur":
             self.poids = random.randint(670, 700)
@@ -12,7 +12,14 @@ class BoulesDePetanque:
             self.poids = random.randint(680, 720)
 
         self.player = player
-        self.diametre = random.randint(13, 76)
+        self.diametre = diametre
+        # ajustement du diamètre
+        if self.diametre > 73:
+            self.diametre = 73
+            print("    Le diamètre ne peut pas être supérieur à 73 mm, diamètre ajusté à 73 mm")
+        elif self.diametre < 13:
+            self.diametre = 13
+            print("    Le diamètre ne peut pas être inférieur à 13 mm, diamètre ajusté à 13 mm")
         self.volume = 4/3 * 3.14 * (self.diametre/2)**3
         self.densite = 0.0027
         self.masse = self.densite * self.volume
@@ -59,16 +66,16 @@ class BoulesDePetanque:
         """
 
 # Création des boules de pétanque
-print("\033[94mCréation des boules de pétanque pour le joueur 1\033[0m")
-boule1 = BoulesDePetanque("tireur")
+print("\033[92mCréation des boules de pétanque pour le joueur 1\033[0m")
+boule1 = BoulesDePetanque("tireur", 70)
 print(boule1)
-print("\033[94mCréation des boules de pétanque pour le joueur 2\033[0m")
-boule2 = BoulesDePetanque("milieu")
+print("\033[92mCréation des boules de pétanque pour le joueur 2\033[0m")
+boule2 = BoulesDePetanque("milieu", 60)
 print(boule2)
-print("\033[94mCréation des boules de pétanque pour le joueur 3\033[0m")
-boule3 = BoulesDePetanque("pointeur")
+print("\033[92mCréation des boules de pétanque pour le joueur 3\033[0m")
+boule3 = BoulesDePetanque("pointeur", 2)
 print(boule3)
 
 # Modification du poids de la boule 1
-print("\033[94mModification du poids de la boule 1\033[0m")
+print("\033[92mModification du poids de la boule 1\033[0m")
 boule1.set_poids(680)
