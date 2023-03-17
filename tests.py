@@ -12,6 +12,7 @@ class bcolors:
 
 # green text
 print(f"{bcolors.OKGREEN}Hello World !{bcolors.ENDC}")
+print(f"{bcolors.WARNING}Hello World !{bcolors.ENDC}")
 
 # print most frequent element in a list
 liste = [1, 2, 2, 2, 2, 3, 4, 4, 4]
