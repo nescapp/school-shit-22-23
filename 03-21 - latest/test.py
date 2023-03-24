@@ -24,4 +24,3 @@ if __name__ == "__main__": # Si le fichier est exécuté directement (et non imp
     print(f"\033[1m{grandPere.nom}\033[0m a laissé \033[1m{grandPere.somme}€\033[0m à ses petits-enfants")
     print(f"\033[1m{ryad.nom}\033[0m hérite de \033[1m{ryad.somme}€\033[0m")
     print(f"\033[1m{sefa.nom}\033[0m hérite de \033[1m{sefa.somme}€\033[0m")
-    input()
