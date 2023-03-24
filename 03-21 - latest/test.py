@@ -1,31 +1,27 @@
-class Parent():
-    """"""
-    
-    def __init__(self, name):
-        self.name = name
+class GrandPere:
+    """Classe définissant le grand-père"""
+    def __init__(self, nom, somme):
+        self.nom = nom
+        self.somme = somme
+
+class Ryad(GrandPere):
+    """Classe définissant le petit-fils Ryad"""
+    def __init__(self, nom, somme):
+        super().__init__(nom, somme)
+        self.somme = somme * 0.75
+
+class Sefa(GrandPere):
+    """Classe définissant le petit-fils Sefa"""
+    def __init__(self, nom, somme):
+        super().__init__(nom, somme)
+        self.somme = somme * 0.25
 
 
-class Enfant1(Parent):
-    """"""
-    
-    def bark(self):
-        print("")
-
-
-class Enfant2(Parent):
-    """"""
-    
-    def meow(self):
-        print("a")
-
-
-def main():
-    enfant1 = Enfant1("Ryad", ) # create a dog and give it a name
-    dog.bark()
-
-    enfant2 = Enfant2("Felix") # create a cat and give it a name
-    cat.meow()
-
-
-if __name__ == "__main__":
-    main() # call main function to avoid global variables
+if __name__ == "__main__": # Si le fichier est exécuté directement (et non importé)
+    grandPere = GrandPere("Simou", 50000)
+    ryad = Ryad("Ryad", grandPere.somme)
+    sefa = Sefa("Sefa", grandPere.somme)
+    print(f"\033[1m{grandPere.nom}\033[0m a laissé \033[1m{grandPere.somme}€\033[0m à ses petits-enfants")
+    print(f"\033[1m{ryad.nom}\033[0m hérite de \033[1m{ryad.somme}€\033[0m")
+    print(f"\033[1m{sefa.nom}\033[0m hérite de \033[1m{sefa.somme}€\033[0m")
+    input()
