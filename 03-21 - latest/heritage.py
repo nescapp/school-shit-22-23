@@ -7,13 +7,13 @@ class GrandPere:
 class Ryad(GrandPere):
     """Classe définissant le petit-fils Ryad"""
     def __init__(self, nom, somme):
-        super().__init__(nom, somme)
+        self.nom = nom
         self.somme = somme * 0.75
 
 class Sefa(GrandPere):
     """Classe définissant le petit-fils Sefa"""
     def __init__(self, nom, somme):
-        super().__init__(nom, somme)
+        self.nom = nom
         self.somme = somme * 0.25
 
 
