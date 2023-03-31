@@ -1,5 +1,3 @@
-# make a basic association between two objects
-
 class Employe:
     """classe de base pour les employes"""
     def __init__(self, nom_de_l_employe, age_de_l_employe):
