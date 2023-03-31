@@ -21,6 +21,11 @@ print(max(set(liste), key=liste.count))
 # round to 2 decimals
 print(round(1.525252, 2))
 
+# or do this
+price_val = 6.12658
+
+print(f'{price_val:.2f}') # 6.13
+
 # print a list 
 t = [1, 2, 3, 4, 5]
 print(*t)
@@ -28,6 +33,9 @@ print(*t)
 # print large numbers with commas
 a = 1_000_000_000
 print(f'{a:,}')
+
+# print number with leading zeros
+print(f'{123:05}')
 
 # list comprehension
 numbers = [i for i in range(100)]
