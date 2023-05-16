@@ -1,0 +1,10 @@
+{
+    "prof": {
+        "password": "prof",
+        "type": "p"
+    },
+    "eleve": {
+        "password": "eleve",
+        "type": "e"
+    }
+}
