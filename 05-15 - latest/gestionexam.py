@@ -19,9 +19,9 @@ def UserList():
             # Afficher le nom d'utilisateur et le type
             print(f'{user} - ', end='')
             if users[user]['type'] == 'e':
-                print('élève')
+                print('\033[93mélève\033[0m')
             elif users[user]['type'] == 'p':
-                print('prof')
+                print('\033[94mprof\033[0m')
         DefineMode() # retourner au menu principal
     else:
         print('aucun utilisateur')
@@ -29,10 +29,11 @@ def UserList():
 
 def GetPassword():
     password = ""
+    print('\033[2m', end='')
     while True:
         ch = msvcrt.getch().decode('utf-8')
         if ch == '\r' or ch == '\n':
-            print()
+            print('\033[0m\n', end='')
             break
         elif ch == '\b' and len(password) > 0:
             password = password[:-1]
@@ -95,7 +96,11 @@ def CreateNewUser(username, password, type):
 def ConnectUser(mode):
     """Fonction qui permet de connecter un utilisateur soit par un login soit par un signup"""
     # titre: connecter utilisateur
-    print('connecter utilisateur (l: login, s: signup, r: retour, q: quitter): ', end='')
+    if mode == 'e':
+        print('connecter utilisateur \033[93mélève\033[0m (\'l\': login, \'s\': signup, \'r\': retour, \'q\': quitter): ', end='')
+    elif mode == 'p':
+        print('connecter utilisateur \033[94mprof\033[0m (\'l\': login, \'s\': signup, \'r\': retour, \'q\': quitter): ', end='')
+
     action = input().lower() # récupérer l'action de l'utilisateur
     
     if action == 'l':
@@ -117,14 +122,14 @@ def ConnectUser(mode):
 def DefineMode():
     """Fonction qui permet de définir le mode de gestion des examens"""
     # titre: choisir mode de gestion des examens
-    print('choisiser mode de gestion des examens (e: élève, p: prof, x:reset, l:liste, q: quitter): ', end='')
+    print('choisiser mode de gestion des examens (\'e\': élève, \'p\': prof, \'x\':reset, \'l\':liste, \'q\': quitter): ', end='')
     action = input().lower() # récupérer l'action de l'utilisateur
     
     if action == 'e':
-        print('mode élève')
+        print('\033[93m[mode élève]\033[0m')
         ConnectUser(action)
     elif action == 'p':
-        print('mode prof')
+        print('\033[94m[mode prof]\033[0m')
         ConnectUser(action)
     elif action == 'x':
         ResetUsers()
@@ -143,11 +148,11 @@ def Login(mode):
     """Fonction qui permet de connecter un utilisateur à son compte"""
     # titre: se connecter à son compte
     if mode == 'e':
-        print('se connecter à son compte élève')
+        print('\033[93m[se connecter à son compte élève]\033[0m')
     elif mode == 'p':
-        print('se connecter à son compte prof')
+        print('\033[94m[se connecter à son compte prof]\033[0m')
 
-    print('r: retour')
+    print('\'r\': retour')
 
     # vérifier si le fichier est vide
     if os.stat(db).st_size == 0:
@@ -158,6 +163,7 @@ def Login(mode):
     while True:
         print('nom d\'utilisateur: ', end='')
         username = input().lower()
+        # had an error here once, not sure why
         if username == 'r':
             ConnectUser(mode)
         elif not VerifyUserExistance(username):
@@ -165,24 +171,42 @@ def Login(mode):
         else:
             break
 
-    # saisie du mot de passe
+    # saisie du mot de passe, problème ici quelque part
     while True:
+        action = None
+
         print('mot de passe: ', end='')
         password = GetPassword()
         if VerifyPassword(username, password):
             break
         else:
-            print('erreur: mot de passe incorrect')
+            print('\033[95merreur: mot de passe incorrect\033[0m')
+            while True:
+                print('(\'r\': réessayer, \'m\': menu principal): ', end='')
+                action = input().lower()
+
+                if action == 'r' or action == 'm':
+                    break
+
+        if action == 'r':
+            # rester dans la boucle si l'utilisateur veut réessayer
+            continue
+        elif action == 'm':
+            # retourner au menu principal si l'utilisateur veut retourner au menu principal
+                ConnectUser(mode)
+        else:
+            # peut être inutile
+            break
             
 def Signup(mode):
     """Fonction qui permet de créer un compte"""
     # titre: créer un compte
     if mode == 'e':
-        print('créer compte élève')
+        print('\033[93m[créer compte élève]\033[0m')
     elif mode == 'p':
-        print('créer compte prof')
+        print('\033[94m[créer compte prof]\033[0m')
 
-    print('r: retour')
+    print('\'r\': retour')
     # procédure de création de compte
 
     # saisie du nom d'utilisateur
@@ -219,9 +243,9 @@ def Signup(mode):
             print('confirmer mot de passe: ', end='')
             password_confirm = GetPassword()
             if password_confirm != password:
-                print('les mots de passe ne correspondent pas!')
+                print('\033[95mles mots de passe ne correspondent pas!\033[0m')
                 while True:
-                    print('(r: réessayer, d: redéfinir, m: menu principal): ', end='')
+                    print('(\'r\': réessayer, \'d\': redéfinir, \'m\': menu principal): ', end='')
                     action = input().lower()
 
                     if action == 'r' or action == 'd' or action == 'm':
@@ -276,4 +300,3 @@ else:
 
 # définir le mode de gestion des examens
 mode = DefineMode()
-    
