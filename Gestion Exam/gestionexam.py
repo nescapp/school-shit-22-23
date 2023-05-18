@@ -4,6 +4,7 @@ import os
 import getpass
 import msvcrt
 import hashlib
+import logging
 
 """
 Modules utilisés:
@@ -11,17 +12,21 @@ json: pour la gestion du fichier users.json
 os: pour la gestion du chemin du fichier users.json
 getpass et msvcrt: pour cacher le mot de passe de l'utilisateur lors de la saisie dans la CLI
 hashlib: pour hasher le mot de passe de l'utilisateur en SHA256
+logging: pour enregistrer les activités de l'utilisateur dans un fichier log
 """
 
-class Session:
-    def __init__(self, id, action, user):
-        self.id = id
-        self.action = action
-        self.user = user
+def MenuProf():
+    """Menu principal pour le mode professeur."""
+    print("\033[2mdebug: menu prof\033[0m")
+    ActionForm({"1": ("Créer un QCM", lambda: None),
+                "2": ("Créer un compte élève", lambda: None),
+                "3": ("Consulter les évaluations", lambda: None),
+                "q": ("Quitter", lambda: Quit())})
 
 
 def Quit():
     """Fonction qui permet de quitter le programme."""
+    logging.info("program quit")
     print("\033c")
     exit()
 
@@ -33,10 +38,12 @@ def ActionForm(actions):
         print("(", end="")
         for key in actions:
             print(f"'{key}': {actions[key][0]}", end=", ")
+            logging.info(f"actions: {key} - {actions[key][0]}")
         print("\b\b)")
 
         # saisir l'action
-        choice = input("Action: ")
+        choice = input("Action: ").lower()
+        logging.info(f"input: {choice}")
         if choice in actions:
             # exécuter l'action choisie par l'utilisateur si elle existe
             actions[choice][1]()
@@ -48,12 +55,16 @@ def ActionForm(actions):
 def tempResetUsers():
     """Fonction qui permet de réinitialiser le fichier users.json. Cette fonction est temporaire et sera supprimée dans la version finale."""
     global users
+    logging.info("resetting users initated")
     open(DB, "w").close()
     CreateNewUser("eleve", hashlib.sha256("eleve".encode()).hexdigest(), "e", False)
+    logging.info("created user 'eleve'")
     CreateNewUser("prof", hashlib.sha256("prof".encode()).hexdigest(), "p", False)
+    logging.info("created user 'prof'")
     # redefine users
     with open(DB, "r") as file:
         users = json.load(file)
+    logging.info("reset users successfully")
     print("\033[92mUtilisateurs réinitialisés avec succès.\033[0m")
 
     DefineModeForm()
@@ -254,9 +265,11 @@ def LoginForm(mode):
         elif VerifyUserStatus(username) != current_mode:
             if current_mode == "e":
                 print("erreur: ce nom d'utilisateur n'est pas un élève")
+                print("voulez-vous vous connecter en tant que prof?", end=" ")
                 ActionForm({"o": ("Oui", lambda: SetMode("p")), "n": ("Non", lambda: ConnectUserForm(current_mode))})
             elif current_mode == "p":
                 print("erreur: ce nom d'utilisateur n'est pas un prof")
+                print("voulez-vous vous connecter en tant qu'élève?", end=" ")
                 ActionForm({"o": ("Oui", lambda: SetMode("e")), "n": ("Non", lambda: ConnectUserForm(current_mode))})
 
 
@@ -275,12 +288,21 @@ def LoginForm(mode):
             print("\033[95merreur: mot de passe incorrect\033[0m")
             ActionForm({"r": ("Réessayer", lambda: None), "m": ("Menu principal", lambda: ConnectUserForm(current_mode))})
 
+    if current_mode == "e":
+        print(f"\033[92mconnecté en tant qu'élève '{username}'\033[0m")
+    elif current_mode == "p":
+        print(f"\033[92mconnecté en tant que prof '{username}'\033[0m")
+        MenuProf()
 
-def SignupForm(mode):
+
+def SignupForm(asmode):
     """Fonction qui permet de créer un compte en saisissant un nom d'utilisateur et un mot de passe et en le confirmant."""
-    if mode == "e":
+    global current_mode
+    if asmode == "e":
+        SetMode("e")
         print("\033[93m[créer compte élève]\033[0m")
-    elif mode == "p":
+    elif asmode == "p":
+        SetMode("p")
         print("\033[94m[créer compte prof]\033[0m")
 
     # procédure de création de compte
@@ -292,12 +314,12 @@ def SignupForm(mode):
         print("nom d'utilisateur: ", end="")
         username = input().lower()
         if username == "r":
-            ConnectUserForm(mode)
+            ConnectUserForm(current_mode)
         elif len(username) < 4:
             print("\033[95merreur: le nom d'utilisateur doit faire au moins 4 caractères\033[0m")
         elif VerifyUserExistance(username):
             print("\033[95merreur: ce nom d'utilisateur existe déjà\033[0m")
-            ConnectUserForm(mode)
+            ConnectUserForm(current_mode)
         else:
             break
 
@@ -342,7 +364,7 @@ def SignupForm(mode):
                     break
                 elif action == "m":
                     # retourner au menu principal si l'utilisateur veut retourner au menu principal
-                    ConnectUserForm(mode)
+                    ConnectUserForm(current_mode)
             else:
                 # Les mots de passe correspondent, sortir de la boucle de confirmation
                 break
@@ -355,24 +377,34 @@ def SignupForm(mode):
             break
     
     print("\033[2mdebug: this is after the while loop for password confirmation, sending request to create new user\033[0m")
-    CreateNewUser(username, new_password[0], mode)
+    CreateNewUser(username, new_password[0], current_mode)
 
 
 def main():
     """Fonction principale qui permet de démarrer le programme."""
     global DB, users, current_mode
+    # configurer le dossier data
+    if not os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")):
+        os.mkdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), "data"))
+
+    # configurer le logger
+    LOG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "gestionexam.log")
+    logging.basicConfig(filename=LOG, level=logging.INFO, format="%(asctime)s [info] %(message)s")
+    print("\033[2mdebug: started logging\033[0m")
+    logging.info("program started")
+
     # Gestion du fichier users.json
-    DB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "users.json")
+    DB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "users.json")
+    logging.info(f"user database: {DB}")
     # s'assurer que le fichier users.json existe et créer le fichier s'il n'existe pas
     if not os.path.exists(DB):
         open(DB, "w").close()
     else:
-        # maintenant que le fichier existe, vérifier s'il est vide
+        # maintenant que le fichier existe, vérifier s'il est vide, si oui, créer le dictionnaire, sinon, trier les utilisateurs par type
         if os.stat(DB).st_size == 0:
-            # si le fichier est vide, créer le dictionnaire
             users = {}
         else:
-            # si le fichier n'est pas vide, trier les utilisateurs par type
+            logging.info("starting to sort users")
             with open(DB, "r") as file:
                 users = json.load(file)
             users = dict(
@@ -380,14 +412,10 @@ def main():
             )
             with open(DB, "w") as file:
                 json.dump(users, file, indent=4)
-    # nettoyer l'écran
-    print("\033c")
-    # définir le mode de gestion des examens
-    DefineModeForm()
-    # connecter un utilisateur
-    ConnectUserForm(current_mode)
-
-
+            logging.info("sorted users successfully")
+    
+    print("\033c") # nettoyer l'écran
+    DefineModeForm() # commencer par le menu qui permet de définir le mode de gestion des examens
 
 if __name__ == "__main__":
     # exécuter le programme si le fichier est exécuté directement.
