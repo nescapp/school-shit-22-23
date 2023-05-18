@@ -1,0 +1,16 @@
+<questions>
+    <question>
+        Quelle est la capitale de la France ?
+        <answer correct="true">Paris</answer>
+        <answer correct="false">Marseille</answer>
+        <answer correct="false">Lyon</answer>
+        <answer correct="false">Toulouse</answer>
+    </question>
+    <question>
+        Quelle est la capitale de l'Espagne ?
+        <answer correct="false">Madrid</answer>
+        <answer correct="true">Barcelona</answer>
+        <answer correct="false">Valencia</answer>
+        <answer correct="false">Seville</answer>
+    </question>
+</questions>

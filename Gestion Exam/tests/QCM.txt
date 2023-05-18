@@ -1,0 +1,11 @@
+Quelle est la capitale de la France ?
+-> Paris
+-x Marseille
+-x Lyon
+-x Toulouse
+
+Quelle est la capitale de l'Espagne ?
+-x Madrid
+-> Barcelone
+-x Valence
+-x Séville

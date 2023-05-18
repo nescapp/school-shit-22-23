@@ -1,0 +1,12 @@
+[
+    {
+      "question": "Quelle est la capitale de la France?",
+      "options": ["A. Londres", "B. Paris", "C. Rome", "D. Madrid"],
+      "correct_answer": "B"
+    },
+    {
+      "question": "Quelle planète est la plus proche du soleil?",
+      "options": ["A. Vénus", "B. Mars", "C. Mercure", "D. Jupiter"],
+      "correct_answer": "C"
+    }
+]

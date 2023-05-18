@@ -13,14 +13,50 @@ getpass et msvcrt: pour cacher le mot de passe de l'utilisateur lors de la saisi
 hashlib: pour hasher le mot de passe de l'utilisateur en SHA256
 """
 
+class Session:
+    def __init__(self, id, action, user):
+        self.id = id
+        self.action = action
+        self.user = user
+
+
+def Quit():
+    """Fonction qui permet de quitter le programme."""
+    print("\033c")
+    exit()
+
+
+def ActionForm(actions):
+    """Fonction qui permet d'afficher un formulaire d'actions et d'exécuter l'action choisie par l'utilisateur."""
+    while True:
+        # afficher les actions
+        print("(", end="")
+        for key in actions:
+            print(f"'{key}': {actions[key][0]}", end=", ")
+        print("\b\b)")
+
+        # saisir l'action
+        choice = input("Action: ")
+        if choice in actions:
+            # exécuter l'action choisie par l'utilisateur si elle existe
+            actions[choice][1]()
+            return choice
+        else:
+            print("\033[95merreur: choix invalide. Veuillez réessayer.\033[0m")
+
 
 def tempResetUsers():
     """Fonction qui permet de réinitialiser le fichier users.json. Cette fonction est temporaire et sera supprimée dans la version finale."""
+    global users
     open(DB, "w").close()
-    CreateNewUser("eleve", hashlib.sha256('eleve'.encode()).hexdigest(), "e", False)
-    CreateNewUser("prof", hashlib.sha256('prof'.encode()).hexdigest(), "p", False)
+    CreateNewUser("eleve", hashlib.sha256("eleve".encode()).hexdigest(), "e", False)
+    CreateNewUser("prof", hashlib.sha256("prof".encode()).hexdigest(), "p", False)
+    # redefine users
+    with open(DB, "r") as file:
+        users = json.load(file)
     print("\033[92mUtilisateurs réinitialisés avec succès.\033[0m")
-    DefineMode()
+
+    DefineModeForm()
 
 
 def UserList():
@@ -34,19 +70,19 @@ def UserList():
                 print("\033[93mélève\033[0m")
             elif users[user]["type"] == "p":
                 print("\033[94mprof\033[0m")
-        DefineMode()  # retourner au menu principal
     else:
-        print("aucun utilisateur")
-        DefineMode()  # retourner au menu principal
+        print("\033[95maucun utilisateur n'existe\033[0m")
+    
+    DefineModeForm()  # retourner au menu principal
 
 
 def Password():
-    """Fonction qui permet de cacher le mot de passe de l'utilisateur lors de la saisie dans la CLI et de le hasher en SHA256"""
+    """Fonction qui permet de cacher le mot de passe de l'utilisateur lors de la saisie dans la CLI et de le hasher en SHA256 directement. Cette fonction retourne le mot de passe hashé et sa longueur."""
     password = ""
     length = 0
     print("\033[2m", end="")
     while True:
-        last_char = msvcrt.getch().decode("utf-8") # récupérer le dernier caractère
+        last_char = msvcrt.getch().decode("utf-8")  # récupérer le dernier caractère
         if last_char == "\r" or last_char == "\n":
             # si l'utilisateur appuie sur entrée, sortir de la boucle
             print("\033[0m\n", end="")
@@ -128,7 +164,7 @@ def CreateNewUser(username, hash, type, verbose=True):
         with open(DB, "r") as file:
             users = json.load(file)
         if username in users:
-            print("erreur: Ce nom d'utilisateur existe déjà.")
+            print("\033[95merreur: ce nom d'utilisateur existe déjà\033[0m")
             return
 
     users[username] = {"password": hash, "type": type}
@@ -138,94 +174,92 @@ def CreateNewUser(username, hash, type, verbose=True):
 
     if verbose:
         if type == "e":
-            print(f"compte \033[93m(élève) '{username}'\033[0m créé avec succès")
+            print(f"compte \033[93mélève '{username}'\033[0m créé avec succès")
         elif type == "p":
-            print(f"compte \033[94m(prof) '{username}'\033[0m créé avec succès")
+            print(f"compte \033[94mprof '{username}'\033[0m créé avec succès")
 
 
-def ConnectUser(mode):
-    """Fonction qui permet de connecter un utilisateur soit par un login soit par un signup."""
-    if mode == "e":
-        print(
-            "connecter utilisateur \033[93mélève\033[0m ('l': login, 's': signup, 'r': retour, 'q': quitter): ",
-            end="",
-        )
-    elif mode == "p":
-        print(
-            "connecter utilisateur \033[94mprof\033[0m ('l': login, 's': signup, 'r': retour, 'q': quitter): ",
-            end="",
-        )
+def ConnectUserForm(asmode):
+    """Formulaire qui permet à l'utilisateur de se connecter à son compte ou de créer un compte."""
+    print(f"\033[2mdebug: this is connect user form, asmode = {asmode}\033[0m")
+    if asmode == "e":
+        SetMode("e") # this is required because the DefineModeForm() can only call one function 
+        print("connecter utilisateur \033[93mélève\033[0m")
+    elif asmode == "p":
+        SetMode("p")
+        print("connecter utilisateur \033[94mprof\033[0m")
 
-    action = input().lower()  # récupérer l'action de l'utilisateur
-
-    if action == "l":
-        LoginForm(mode)
-    elif action == "s":
-        SignupForm(mode)
-    elif action == "r":
-        mode = DefineMode()
-    elif action == "q":
-        # nettoyer l'écran et quitter le programme
-        print("\033c")
-        exit()
-    else:
-        # action inconnue, tentative de connexion à nouveau
-        print("\033c")
-        print("action inconnue")
-        ConnectUser(mode)
-
-
-def DefineMode():
-    """Formulaire qui permet de définir le mode de gestion des examens."""
-    print(
-        "choisiser mode de gestion des examens ('e': élève, 'p': prof, 'x':reset, 'l':liste, 'q': quitter): ",
-        end="",
+    ActionForm(
+        {
+            "l": ("Login", lambda: LoginForm(asmode)),
+            "s": ("Signup", lambda: SignupForm(asmode)),
+            "r": ("Retour", lambda: DefineModeForm()),
+            "q": ("Quitter", lambda: Quit()),
+        }
     )
-    action = input().lower()  # récupérer l'action de l'utilisateur
 
-    if action == "e":
+
+def SetMode(mode):
+    """Fonction qui permet de définir le mode de gestion des examens."""
+    global current_mode
+    if mode == "e":
         print("\033[93m[mode élève]\033[0m")
-        ConnectUser(action)
-    elif action == "p":
+        current_mode = "e"
+    elif mode == "p":
         print("\033[94m[mode prof]\033[0m")
-        ConnectUser(action)
-    elif action == "x":
-        tempResetUsers()
-    elif action == "l":
-        UserList()
-    elif action == "q":
-        # nettoyer l'écran et quitter le programme
-        print("\033c")
-        exit()
-    else:
-        # action inconnue, tentative de sélection de mode à nouveau
-        DefineMode()
+        current_mode = "p"
+
+    print(f"\033[2mdebug: current_mode = {current_mode}\033[0m")
+
+
+def DefineModeForm():
+    """Formulaire qui permet de définir le mode de gestion des examens selon l'utilisateur."""
+    print("\033[2mdebug: this is define mode form\033[0m")
+    print("définir le mode de gestion des examens: ")
+    ActionForm(
+        {
+            "e": ("Mode élève", lambda: ConnectUserForm("e")),
+            "p": ("Mode prof", lambda: ConnectUserForm("p")),
+            "x": ("Reset", lambda: tempResetUsers()),
+            "l": ("Liste", lambda: UserList()),
+            "q": ("Quitter", lambda: Quit()),
+        }
+    )
 
 
 def LoginForm(mode):
     """Formulaire de connexion à un compte."""
-    # titre: se connecter à son compte
-    if mode == "e":
+    global current_mode
+    if current_mode == "e":
         print("\033[93m[se connecter à son compte élève]\033[0m")
-    elif mode == "p":
+    elif current_mode == "p":
         print("\033[94m[se connecter à son compte prof]\033[0m")
 
-    print("'r': retour")
 
     # vérifier si le fichier est vide
     if os.stat(DB).st_size == 0:
-        print("aucun utilisateur n'existe")
-        ConnectUser(mode)
+        print("\033[95merreur: aucun utilisateur n'existe\033[0m")
+        ConnectUserForm(current_mode)
 
     # saisie du nom d'utilisateur
     while True:
+        print("'r': retour")
         print("nom d'utilisateur: ", end="")
         username = input().lower()
         # had an error here once, not sure why
         if username == "r":
-            ConnectUser(mode)
+            ConnectUserForm(current_mode)
         elif not VerifyUserExistance(username):
             print("erreur: ce nom d'utilisateur n'existe pas")
+        elif VerifyUserStatus(username) != current_mode:
+            if current_mode == "e":
+                print("erreur: ce nom d'utilisateur n'est pas un élève")
+                ActionForm({"o": ("Oui", lambda: SetMode("p")), "n": ("Non", lambda: ConnectUserForm(current_mode))})
+            elif current_mode == "p":
+                print("erreur: ce nom d'utilisateur n'est pas un prof")
+                ActionForm({"o": ("Oui", lambda: SetMode("e")), "n": ("Non", lambda: ConnectUserForm(current_mode))})
+
+
         else:
             break
 
@@ -239,51 +273,37 @@ def LoginForm(mode):
             break
         else:
             print("\033[95merreur: mot de passe incorrect\033[0m")
-            while True:
-                print("('r': réessayer, 'm': menu principal): ", end="")
-                action = input().lower()
-
-                if action == "r" or action == "m":
-                    break
-
-        if action == "r":
-            # rester dans la boucle si l'utilisateur veut réessayer
-            continue
-        elif action == "m":
-            # retourner au menu principal si l'utilisateur veut retourner au menu principal
-            ConnectUser(mode)
-        else:
-            # peut être inutile
-            break
+            ActionForm({"r": ("Réessayer", lambda: None), "m": ("Menu principal", lambda: ConnectUserForm(current_mode))})
 
 
 def SignupForm(mode):
     """Fonction qui permet de créer un compte en saisissant un nom d'utilisateur et un mot de passe et en le confirmant."""
-    # titre: créer un compte
     if mode == "e":
         print("\033[93m[créer compte élève]\033[0m")
     elif mode == "p":
         print("\033[94m[créer compte prof]\033[0m")
 
-    print("'r': retour")
     # procédure de création de compte
 
     # saisie du nom d'utilisateur
     while True:
+        # print("\033[2mdebug: this is the while loop for username\033[0m")
+        print("'r': retour")
         print("nom d'utilisateur: ", end="")
         username = input().lower()
         if username == "r":
-            ConnectUser(mode)
+            ConnectUserForm(mode)
         elif len(username) < 4:
-            print("erreur: le nom d'utilisateur doit faire au moins 4 caractères")
+            print("\033[95merreur: le nom d'utilisateur doit faire au moins 4 caractères\033[0m")
         elif VerifyUserExistance(username):
-            print("erreur: ce nom d'utilisateur existe déjà")
-            ConnectUser(mode)
+            print("\033[95merreur: ce nom d'utilisateur existe déjà\033[0m")
+            ConnectUserForm(mode)
         else:
             break
 
     # saisie du mot de passe
     while True:
+        # print("\033[2mdebug: this is the while loop for password\033[0m")
         new_password = None
         new_password_length = None
         action = None
@@ -293,11 +313,12 @@ def SignupForm(mode):
             print("mot de passe: ", end="")
             new_password = Password()
             if new_password[1] < 4:
-                print("erreur: le mot de passe doit faire au moins 4 caractères")
+                print("\033[95merreur: le mot de passe doit faire au moins 4 caractères\033[0m")
             else:
                 break
 
         while True:
+            # print("\033[2mdebug: this is the while loop for password confirmation\033[0m")
             # demander la confirmation du mot de passe tant qu'il ne correspond pas au mot de passe
             print("confirmer mot de passe: ", end="")
             new_password_confirm = Password()
@@ -321,7 +342,7 @@ def SignupForm(mode):
                     break
                 elif action == "m":
                     # retourner au menu principal si l'utilisateur veut retourner au menu principal
-                    ConnectUser(mode)
+                    ConnectUserForm(mode)
             else:
                 # Les mots de passe correspondent, sortir de la boucle de confirmation
                 break
@@ -332,36 +353,41 @@ def SignupForm(mode):
         else:
             # sortir si aucune action n'a été prise et donc les mots de passe correspondent
             break
-
+    
+    print("\033[2mdebug: this is after the while loop for password confirmation, sending request to create new user\033[0m")
     CreateNewUser(username, new_password[0], mode)
 
 
 def main():
+    """Fonction principale qui permet de démarrer le programme."""
+    global DB, users, current_mode
+    # Gestion du fichier users.json
+    DB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "users.json")
+    # s'assurer que le fichier users.json existe et créer le fichier s'il n'existe pas
+    if not os.path.exists(DB):
+        open(DB, "w").close()
+    else:
+        # maintenant que le fichier existe, vérifier s'il est vide
+        if os.stat(DB).st_size == 0:
+            # si le fichier est vide, créer le dictionnaire
+            users = {}
+        else:
+            # si le fichier n'est pas vide, trier les utilisateurs par type
+            with open(DB, "r") as file:
+                users = json.load(file)
+            users = dict(
+                sorted(users.items(), key=lambda item: item[1]["type"], reverse=True)
+            )
+            with open(DB, "w") as file:
+                json.dump(users, file, indent=4)
     # nettoyer l'écran
     print("\033c")
     # définir le mode de gestion des examens
-    mode = DefineMode()
+    DefineModeForm()
+    # connecter un utilisateur
+    ConnectUserForm(current_mode)
 
 
-# Gestion du fichier users.json
-DB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "users.json")
-# s'assurer que le fichier users.json existe et créer le fichier s'il n'existe pas
-if not os.path.exists(DB):
-    open(DB, "w").close()
-else:
-    # maintenant que le fichier existe, vérifier s'il est vide
-    if os.stat(DB).st_size == 0:
-        # si le fichier est vide, créer le dictionnaire
-        users = {}
-    else:
-        # si le fichier n'est pas vide, trier les utilisateurs par type
-        with open(DB, "r") as file:
-            users = json.load(file)
-        users = dict(
-            sorted(users.items(), key=lambda item: item[1]["type"], reverse=True)
-        )
-        with open(DB, "w") as file:
-            json.dump(users, file, indent=4)
 
 if __name__ == "__main__":
     # exécuter le programme si le fichier est exécuté directement.
