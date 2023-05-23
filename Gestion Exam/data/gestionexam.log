@@ -46,3 +46,44 @@
 2023-05-23 10:44:29,209 [info] actions: x - Reset
 2023-05-23 10:44:29,210 [info] actions: l - Liste
 2023-05-23 10:44:29,210 [info] actions: q - Quitter
+2023-05-23 10:50:24,011 [info] program started
+2023-05-23 10:50:24,011 [info] user database: c:\Users\edvard.radesey\Downloads\school-shit-22-23\Gestion Exam\data\users.json
+2023-05-23 10:50:24,012 [info] starting to sort users
+2023-05-23 10:50:24,013 [info] sorted users successfully
+2023-05-23 10:50:24,015 [info] actions: e - Mode élève
+2023-05-23 10:50:24,015 [info] actions: p - Mode prof
+2023-05-23 10:50:24,016 [info] actions: x - Reset
+2023-05-23 10:50:24,016 [info] actions: l - Liste
+2023-05-23 10:50:24,016 [info] actions: q - Quitter
+2023-05-23 10:50:42,651 [info] input: p
+2023-05-23 10:50:42,651 [info] actions: l - Login
+2023-05-23 10:50:42,653 [info] actions: s - Signup
+2023-05-23 10:50:42,653 [info] actions: r - Retour
+2023-05-23 10:50:42,653 [info] actions: q - Quitter
+2023-05-23 10:50:47,654 [info] input: r
+2023-05-23 10:50:47,654 [info] actions: e - Mode élève
+2023-05-23 10:50:47,654 [info] actions: p - Mode prof
+2023-05-23 10:50:47,658 [info] actions: x - Reset
+2023-05-23 10:50:47,658 [info] actions: l - Liste
+2023-05-23 10:50:47,658 [info] actions: q - Quitter
+2023-05-23 10:50:49,481 [info] input: e
+2023-05-23 10:50:49,481 [info] actions: l - Login
+2023-05-23 10:50:49,490 [info] actions: s - Signup
+2023-05-23 10:50:49,490 [info] actions: r - Retour
+2023-05-23 10:50:49,490 [info] actions: q - Quitter
+2023-05-23 10:50:54,154 [info] input: l
+2023-05-23 10:51:02,566 [info] program started
+2023-05-23 10:51:02,567 [info] user database: c:\Users\edvard.radesey\Downloads\school-shit-22-23\Gestion Exam\data\users.json
+2023-05-23 10:51:02,568 [info] starting to sort users
+2023-05-23 10:51:02,569 [info] sorted users successfully
+2023-05-23 10:51:02,572 [info] actions: e - Mode élève
+2023-05-23 10:51:02,572 [info] actions: p - Mode prof
+2023-05-23 10:51:02,572 [info] actions: x - Reset
+2023-05-23 10:51:02,575 [info] actions: l - Liste
+2023-05-23 10:51:02,576 [info] actions: q - Quitter
+2023-05-23 10:51:04,721 [info] input: e
+2023-05-23 10:51:04,730 [info] actions: l - Login
+2023-05-23 10:51:04,730 [info] actions: s - Signup
+2023-05-23 10:51:04,730 [info] actions: r - Retour
+2023-05-23 10:51:04,730 [info] actions: q - Quitter
+2023-05-23 10:51:06,190 [info] input: s

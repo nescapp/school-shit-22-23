@@ -1,18 +1,3 @@
-"""
-make a python program that would interpret the following .txt file (stored as "QCM.txt" in the same directory as the .py file) and would proceed to ask each question and listing all answers with a corresponding letter (A,B,C,D) and letting the user choose an answer. It would then say if the answer is correct or not. In the .txt file, the questions are written first and under them would be listed all responses with a "-" followed by "x' if it is a wrong answer and ">" if it is a correct answer. The question ends with an empty line. This is the .txt file:
-Quelle est la capitale de la France ?
--> Paris
--x Marseille
--x Lyon
--x Toulouse
-
-Quelle est la capitale de l'Espagne ?
--x Madrid
--> Barcelone
--x Valence
--x Séville
-
-"""
 import os
 
 class question:
@@ -35,10 +20,6 @@ class question:
         else:
             print("Wrong!")
 
-# test = question("test", ["test1", "test2", "test3", "test4"], 2)
-# test.ask()
-
-# for every line that doesn't start with a "-" and is not empty, create a question object
 qcm = os.path.join(os.path.dirname(__file__), "QCM.txt")
 
 questions = []
@@ -64,5 +45,3 @@ with open(qcm, 'r') as file:
 for question in questions:
     question.ask()
     print()
-
-

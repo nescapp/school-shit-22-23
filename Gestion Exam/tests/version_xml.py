@@ -35,9 +35,9 @@ for i, question in enumerate(root.findall('question')):
         if is_correct:
             print('Correct!')
         else:
-            print('Wrong!')
-            print(f'The correct answer is: {correct_answer}')
+            print('Faux!')
+            print(f'réponse: {correct_answer}')
     else:
-        print('Invalid answer!')
+        print('erreur!')
 
     print()
