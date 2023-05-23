@@ -1,0 +1,14 @@
+chien
+cheval
+chat
+souris
+rat
+lapin
+cochon
+mouton
+vache
+poule
+coq
+canard
+oie
+chevre
