@@ -1,5 +1,20 @@
 import datetime
+import json
+import os
+import getpass
+import msvcrt
+import hashlib
+import logging
 
+"""
+Modules utilisés:
+datetime: pour la gestion de la date
+json: pour la gestion du fichier users.json
+os: pour la gestion du chemin du fichier users.json
+getpass et msvcrt: pour cacher le mot de passe de l'utilisateur lors de la saisie dans la CLI
+hashlib: pour hasher le mot de passe de l'utilisateur en SHA256
+logging: pour enregistrer les activités de l'utilisateur dans un fichier log
+"""
 
 class QCM:
     def __init__(self, numero_qcm, nombre_questions, duree):
@@ -12,7 +27,7 @@ class QCM:
         self.questions.append((question, reponses, reponse_correcte))
 
     def enregistrer_qcm(self):
-        nom_fichier = f"QCM{self.numero_qcm}_{datetime.date.today().year}.txt"
+        nom_fichier = f"QCM{self.numero_qcm}.txt"
         with open(nom_fichier, "w") as fichier:
             fichier.write(f"Numéro du QCM : {self.numero_qcm}\n")
             fichier.write(f"Nombre de questions : {self.nombre_questions}\n")
@@ -26,7 +41,7 @@ class QCM:
                 fichier.write("\n")
 
     def charger_qcm(self, numero_qcm):
-        nom_fichier = f"QCM{numero_qcm}_{datetime.date.today().year}.txt"
+        nom_fichier = f"QCM{numero_qcm}.txt"
         with open(nom_fichier, "r") as fichier:
             # Charger les informations du QCM à partir du fichier texte
             pass
@@ -72,7 +87,7 @@ class Eleve:
         # Charger les QCMs non encore effectués
         qcms_non_effectues = []
         for numero_qcm in range(1, 4):  # Exemple avec 3 QCMs
-            nom_fichier = f"QCM{numero_qcm}_{datetime.date.today().year}.txt"
+            nom_fichier = f"QCM{numero_qcm}.txt"
             if not self.qcm_effectue(nom_fichier):
                 qcm = QCM(numero_qcm, 0, 0)
                 qcm.charger_qcm(numero_qcm)

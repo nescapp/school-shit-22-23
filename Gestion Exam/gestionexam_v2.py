@@ -14,52 +14,40 @@ hashlib: pour hasher le mot de passe de l'utilisateur en SHA256
 logging: pour enregistrer les activités de l'utilisateur dans un fichier log
 """
 
-# variables globales
-MODE = None
-DB = os.path.join(os.path.dirname(__file__), "users.json")
 
-"""
-Vaiables globales:
-DB: chemin du fichier users.json
-users: dictionnaire qui contient les utilisateurs dans le fichier users.json
-"""
-
-
-class Utilisateur():
+class Utilisateur:
     def __init__(self, nom, prenom, nom_utilisateur, mot_de_passe_hash, type):
         self.nom = nom
         self.prenom = prenom
         self.nom_utilisateur = nom_utilisateur
         self.mot_de_passe_hash = mot_de_passe_hash
         self.type = type
-    
+
     def create_new(nom, prenom, nom_utilisateur, mot_de_passe_hash, type, verbose=True):
+        """Fonction qui permet de créer un nouvel utilisateur."""
         pass
+
 
 class Professeur(Utilisateur):
-    def menu(self):
-        # still working on it
-        pass
     def create_qcm(self):
+        """Fonction qui permet de créer un QCM."""
         # still working on it
         pass
+
 
 class Eleve(Utilisateur):
-    def menu(self):
-        # still working on it
-        pass
     def start_qcm(self):
-        # still working on it
-        pass
-    def check_qcm(self):
+        """Fonction qui permet de démarrer un QCM."""
         # still working on it
         pass
 
-class QCM():
+
+class QCM:
     def __init__(self, id, creation_date, duration):
         self.id = id
         self.creation_date = creation_date
         self.duration = duration
+
 
 class Question(QCM):
     def __init__(self, id, question, options, answer):
@@ -67,62 +55,6 @@ class Question(QCM):
         self.question = question
         self.options = options
         self.answer = answer
-
-# fonctions debug
-
-def debugUserList():
-    """Fonction qui permet d'afficher la liste des utilisateurs dans la CLI."""
-    if os.stat(DB).st_size != 0:
-        # Si le fichier n'est pas vide
-        for user in users:
-            # Afficher le nom d'utilisateur et le type
-            print(f"{user} - ", end="")
-            if users[user]["type"] == "e":
-                print("\033[93mélève\033[0m")
-            elif users[user]["type"] == "p":
-                print("\033[94mprof\033[0m")
-    else:
-        print("\033[95maucun utilisateur n'existe\033[0m")
-    MainMenuScreen()
-
-
-def debugReset():
-    """Fonction qui permet de réinitialiser le fichier users.json. Cette fonction est temporaire et sera supprimée dans la version finale."""
-    global users
-
-    
-
-    with open(DB, "r") as file:
-        users = json.load(file)
-    logging.info("reset users successfully")
-    print("\033[92mUtilisateurs réinitialisés avec succès.\033[0m")
-    MainMenuScreen()
-
-
-# écrans
-
-def MainMenuScreen():
-    """Fonction qui permet d'afficher le menu principal de l'utilisateur."""
-    global mode
-    print("définir le mode de gestion des examens: ")
-    ActionForm(
-        {
-            "e": ("Mode élève", lambda: ConnectUserForm("e")),
-            "p": ("Mode prof", lambda: ConnectUserForm("p")),
-            "x": ("@debug Reset", lambda: debugReset()),
-            "l": ("@debug Liste", lambda: debugUserList()),
-            "q": ("Quitter", lambda: Quit()),
-        }
-    )
-
-
-# fonctions porgamme
-
-def SetMode(new_mode):
-    """Fonction qui permet de définir le mode de l'utilisateur."""
-    global mode
-    mode = new_mode
-    logging.info(f"mode set to {new_mode}")
 
 
 def ActionForm(actions):
@@ -157,11 +89,17 @@ def init():
     """Fonction qui permet d'initialiser le programme."""
     global DB
     # configurer le logger
-    LOG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "gestionexam.log")
-    logging.basicConfig(filename=LOG, level=logging.INFO, format="%(asctime)s [info] %(message)s")
+    LOG = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "data", "gestionexam.log"
+    )
+    logging.basicConfig(
+        filename=LOG, level=logging.INFO, format="%(asctime)s [info] %(message)s"
+    )
     logging.info("init started")
     # s'assurer que le dossier data existe (Il permet de stocker les fichiers de données du programme)
-    if not os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")):
+    if not os.path.exists(
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+    ):
         os.mkdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), "data"))
         logging.info("data folder created")
     # s'assurer que le fichier users.json existe
@@ -187,14 +125,10 @@ def init():
 
 def main():
     """Fonction principale du programme."""
-    global mode
+    global MODE
     # initialiser le programme
     init()
     # laisser l'utilisateur choisir son mode ('p' pour professeur, 'e' pour élève)
-    print("Bienvenue dans le programme de gestion des examens. Choisissez votre mode:")
-
-
-
 
 
 if __name__ == "__main__":
