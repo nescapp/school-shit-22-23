@@ -30,14 +30,14 @@ class QCM:
     def enregistrer_qcm(self):
         nom_fichier = f"QCM{self.numero_qcm}.txt"
         with open(nom_fichier, "w") as fichier:
-            fichier.write(f"Numéro du QCM : {self.numero_qcm}\n")
-            fichier.write(f"Nombre de questions : {self.nombre_questions}\n")
-            fichier.write(f"Durée : {self.duree} minutes\n")
+            fichier.write(f"numero_qcm : {self.numero_qcm}\n")
+            fichier.write(f"nombre_questions : {self.nombre_questions}\n")
+            fichier.write(f"duree : {self.duree} minutes\n")
             fichier.write("\n")
             for i, (question, reponses, reponse_correcte) in enumerate(
                 self.questions, start=1
             ):
-                fichier.write(f"Question {i}: {question}\n")
+                fichier.write(f"question {i}: {question}\n")
                 for j, reponse in enumerate(reponses, start=1):
                     fichier.write(f"   {j}. {reponse}\n")
                 fichier.write(f"   -> Réponse correcte : {reponse_correcte}\n")
@@ -59,12 +59,19 @@ class Eleve:
     def creer_compte(self):
         nom_fichier = f"{self.nom}_{self.numero_inscription}.txt"
         with open("eleves.txt", "a") as fichier:
-            fichier.write(f"Nom : {self.nom}\n")
-            fichier.write(f"Numéro d'inscription : {self.numero_inscription}\n")
-            fichier.write(f"Année de naissance : {self.annee_naissance}\n")
+            fichier.write(f"nom : {self.nom}\n")
+            fichier.write(f"numero_inscription : {self.numero_inscription}\n")
+            fichier.write(f"annee_naissance : {self.annee_naissance}\n")
             fichier.write("\n")
         with open(nom_fichier, "w") as fichier:
             pass
+
+    def verifier_compte(self):
+        nom_fichier = f"{self.nom}_{self.numero_inscription}.txt"
+        if not os.path.exists(nom_fichier):
+            print("Compte inexistant.")
+            return False
+        return True
 
     def passer_test(self):
         # Afficher la liste des QCM non encore effectués
@@ -122,9 +129,9 @@ class Eleve:
         nom_fichier = f"{self.nom}_{self.numero_inscription}.txt"
         with open(nom_fichier, "a") as fichier:
             fichier.write(f"QCM : {qcm.numero_qcm}\n")
-            fichier.write(f"Date du test : {datetime.date.today()}\n")
-            fichier.write(f"Durée du test : {qcm.duree} minutes\n")
-            fichier.write("Réponses :\n")
+            fichier.write(f"date : {datetime.date.today()}\n")
+            fichier.write(f"duree : {qcm.duree} minutes\n")
+            fichier.write("reponses :\n")
             for i, reponse in enumerate(reponses, start=1):
                 fichier.write(f"Question {i}: {reponse}\n")
             fichier.write("\n")
@@ -178,6 +185,7 @@ class Professeur:
         return eleves
 
 
+
 def quit():
     print("\033c")
     exit()
@@ -211,6 +219,7 @@ def mode_professeur():
 def mode_eleve():
     print("\033[43m[Mode Élève]\033[0m")
     nom = input("Nom de l'élève : ")
+    Eleve.verifier_compte(nom)
     numero_inscription = input("Numéro d'inscription : ")
     eleve = Eleve(nom, numero_inscription, 0)
 
