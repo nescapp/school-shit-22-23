@@ -83,17 +83,56 @@ class Professeur:
         questions = []
         while True:
             question = input("Question (ou 'q' pour quitter) : ")
+class QCM:
+    def __init__(self, numero_qcm, duree, questions, nom_qcm):
+        self.numero_qcm = numero_qcm
+        self.duree = duree
+        self.questions = questions
+        self.nom_qcm = nom_qcm
+
+    def enregistrer(self):
+        filename = f"{self.numero_qcm}.txt"
+        with open(filename, "w") as file:
+            file.write(f"{self.nom_qcm}\n")
+            file.write(f"{self.duree}\n")
+            for question in self.questions:
+                file.write(f"{question['question']}\n")
+                for reponse in question['reponses']:
+                    file.write(f"{reponse}\n")
+                file.write(f"{question['reponse']}\n")
+
+class Professeur:
+    def __init__(self):
+        self.qcms = []
+        self.eleves = []
+
+    def menu(self):
+        actions = {
+            '1': ('Créer un QCM', self.creer_qcm),
+            '2': ('Créer un compte élève', self.creer_compte_eleve),
+            '3': ('Corriger un QCM', self.correction_eleve),
+            '4': ('Quitter', self.quitter)
+        }
+        ActionForm(actions)
+
+    def creer_qcm(self):
+        numero_qcm = input("Numéro du QCM : ")
+        duree = input("Durée du QCM (en minutes) : ")
+        nom_qcm = input("Nom du QCM : ")
+        questions = []
+        while True:
+            question = input("Question (ou 'q' pour quitter) : ")
             if question == 'q':
                 break
             reponses = []
             while True:
-                reponse = input("Réponse (ou 'q' pour quitter) : ")
+                reponse = input("Réponse (1, 2, 3 ou 4) : ")
                 if reponse == 'q':
                     break
                 reponses.append(reponse)
             bonne_reponse = int(input("Numéro de la bonne réponse : ")) - 1
             questions.append({'question': question, 'reponses': reponses, 'reponse': bonne_reponse})
-        qcm = QCM(numero_qcm, duree, questions)
+        qcm = QCM(numero_qcm, duree, questions, nom_qcm)
         self.qcms.append(qcm)
         qcm.enregistrer()
 
@@ -112,21 +151,24 @@ class Professeur:
             reponses = file.readlines()
         score = 0
         for i, question in enumerate(qcm.questions):
-            print(f"{i+1}. {question['question']}")
+            print(f"Question {i+1} : {question['question']}")
             for j, reponse in enumerate(question['reponses']):
                 if j == question['reponse']:
                     print(f"-> {reponse}")
                 else:
                     print(f"-x {reponse}")
-            reponse_eleve = int(reponses[i].strip())
-            if reponse_eleve == question['reponse'] + 1:
+            reponse_eleve = input("Réponse (1, 2, 3 ou 4) : ")
+            while reponse_eleve not in ['1', '2', '3', '4']:
+                print("Réponse invalide. Veuillez entrer 1, 2, 3 ou 4.")
+                reponse_eleve = input("Réponse (1, 2, 3 ou 4) : ")
+            if int(reponse_eleve) == question['reponse'] + 1:
                 score += 1
         print(f"Score : {score}/{len(qcm.questions)}")
 
     def choisir_qcm(self):
         print("QCMs disponibles :")
         for i, qcm in enumerate(self.qcms):
-            print(f"{i+1}. {qcm.numero_qcm}")
+            print(f"{i+1}. {qcm.nom_qcm}")
         choix = int(input("Numéro du QCM : ")) - 1
         return self.qcms[choix]
 
@@ -145,7 +187,6 @@ class MenuEleve:
 
         print(f"\033[2mdebug : nom_utilisateur : {nom_utilisateur}\033[0m")
         print(f"\033[2mdebug : mot_de_passe : {mot_de_passe}\033[0m")
-        print(f"\033[2mdebug : eleve : {eleve}\033[0m")
 
         if eleve is None:
             print("Nom d'utilisateur ou mot de passe incorrect.")
@@ -156,7 +197,7 @@ class MenuEleve:
             return
         print("QCMs disponibles :")
         for i, qcm in enumerate(qcms):
-            print(f"{i+1}. {qcm.numero_qcm}")
+            print(f"{i+1}. {qcm.nom_qcm}")
         choix = int(input("Numéro du QCM : ")) - 1
         qcm = qcms[choix]
         filename = f"{eleve.nom_utilisateur}_{qcm.numero_qcm}_{datetime.datetime.now().year}.txt"
@@ -165,10 +206,13 @@ class MenuEleve:
             return
         with open(filename, "w") as file:
             for i, question in enumerate(qcm.questions):
-                print(f"{i+1}. {question['question']}")
+                print(f"Question {i+1} : {question['question']}")
                 for j, reponse in enumerate(question['reponses']):
                     print(f"{j+1}. {reponse}")
-                reponse = int(input("Réponse : "))
+                reponse = input("Réponse (1, 2, 3 ou 4) : ")
+                while reponse not in ['1', '2', '3', '4']:
+                    print("Réponse invalide. Veuillez entrer 1, 2, 3 ou 4.")
+                    reponse = input("Réponse (1, 2, 3 ou 4) : ")
                 file.write(f"{reponse}\n")
         print("QCM enregistré.")
 
@@ -179,7 +223,9 @@ class MenuEleve:
 
         print(f"\033[2mdebug : ")
         print(self.professeur.eleves)
-        print(f"\033[0m")
+        for eleve in self.professeur.eleves:
+            print(eleve.nom_utilisateur, eleve.mot_de_passe)
+        print("\033[0m")
         for eleve in self.professeur.eleves:
             print(f"\033[2mdebug : existing hash : {eleve.mot_de_passe}\033[0m")
             print(f"\033[2mdebug : correct : {eleve.mot_de_passe == hashlib.sha256(mot_de_passe.encode()).hexdigest()}\033[0m")
@@ -213,12 +259,13 @@ def ActionForm(actions):
 def main():
     professeur = Professeur()
     actions = {
-        'p': ('Mode Professeur', professeur.menu),
-        'e': ('Mode Élève', MenuEleve(professeur).menu),
-        'q': ('Quitter', professeur.quitter)
+        '1': ('Mode Professeur', professeur.menu),
+        '2': ('Mode Élève', MenuEleve(professeur).menu),
+        '3': ('Quitter', professeur.quitter)
     }
     while True:
         ActionForm(actions)
 
 if __name__ == '__main__':
     main()
+    
