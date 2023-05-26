@@ -1,0 +1,18 @@
+Numéro du QCM : 2
+Durée du QCM : 10
+Questions :
+1. a
+-> a
+-x b
+-x b
+-x b
+2. a
+-x b
+-x b
+-> a
+-x b
+3. a
+-x b
+-> a
+-x b
+-x b
