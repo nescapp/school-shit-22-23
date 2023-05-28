@@ -1,0 +1,13 @@
+Capitales
+30
+Quelle est la capitale de la France?
+1
+Paris
+Barcelone
+1
+Quelle est la capitele de la belgique?
+Bruxelles
+paris
+Espagne
+Roumanie
+0

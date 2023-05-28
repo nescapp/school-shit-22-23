@@ -68,14 +68,13 @@ class Professeur:
                         self.eleves.append(eleve)
 
     def menu(self):
-        actions = {
+        ActionForm({
             'c': ('Créer un QCM', self.creer_qcm),
             'a': ('Créer un compte élève', self.creer_compte_eleve),
             'crt': ('Corriger les réponses d\'un élève', self.correction_eleve),
             'r': ('Retour', None),
             'q': ('Quitter', self.quitter)
-        }
-        ActionForm(actions)
+        })
 
     def creer_qcm(self):
         numero_qcm = input("Numéro du QCM : ")
@@ -83,37 +82,18 @@ class Professeur:
         questions = []
         while True:
             question = input("Question (ou 'q' pour quitter) : ")
-class QCM:
-    def __init__(self, numero_qcm, duree, questions, nom_qcm):
-        self.numero_qcm = numero_qcm
-        self.duree = duree
-        self.questions = questions
-        self.nom_qcm = nom_qcm
-
-    def enregistrer(self):
-        filename = f"{self.numero_qcm}.txt"
-        with open(filename, "w") as file:
-            file.write(f"{self.nom_qcm}\n")
-            file.write(f"{self.duree}\n")
-            for question in self.questions:
-                file.write(f"{question['question']}\n")
-                for reponse in question['reponses']:
-                    file.write(f"{reponse}\n")
-                file.write(f"{question['reponse']}\n")
-
 class Professeur:
     def __init__(self):
         self.qcms = []
         self.eleves = []
 
     def menu(self):
-        actions = {
+        ActionForm({
             '1': ('Créer un QCM', self.creer_qcm),
             '2': ('Créer un compte élève', self.creer_compte_eleve),
             '3': ('Corriger un QCM', self.correction_eleve),
-            '4': ('Quitter', self.quitter)
-        }
-        ActionForm(actions)
+            'q': ('Quitter', self.quitter)
+        })
 
     def creer_qcm(self):
         numero_qcm = input("Numéro du QCM : ")
@@ -125,10 +105,8 @@ class Professeur:
             if question == 'q':
                 break
             reponses = []
-            while True:
-                reponse = input("Réponse (1, 2, 3 ou 4) : ")
-                if reponse == 'q':
-                    break
+            for i in range(4):
+                reponse = input(f"Réponse {i+1} : ")
                 reponses.append(reponse)
             bonne_reponse = int(input("Numéro de la bonne réponse : ")) - 1
             questions.append({'question': question, 'reponses': reponses, 'reponse': bonne_reponse})
@@ -173,7 +151,7 @@ class Professeur:
         return self.qcms[choix]
 
     def quitter(self):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        print("\033c")
         exit()
 
 class MenuEleve:
@@ -183,10 +161,12 @@ class MenuEleve:
     def menu(self):
         nom_utilisateur = input("Nom d'utilisateur : ")
         mot_de_passe = input("Mot de passe : ")
+        print(f"\033[2mdebug : nom_utilisateur (envoyé) : {nom_utilisateur}\033[0m")
+        print(f"\033[2mdebug : mot_de_passe (envoyé) : {mot_de_passe}\033[0m")
+        
+        
         eleve = self.trouver_eleve(nom_utilisateur, mot_de_passe)
 
-        print(f"\033[2mdebug : nom_utilisateur : {nom_utilisateur}\033[0m")
-        print(f"\033[2mdebug : mot_de_passe : {mot_de_passe}\033[0m")
 
         if eleve is None:
             print("Nom d'utilisateur ou mot de passe incorrect.")
@@ -221,7 +201,7 @@ class MenuEleve:
         print(f"\033[2mdebug : mot_de_passe (recu) : {mot_de_passe}\033[0m")
         print(f"\033[2mdebug : expected hash : {hashlib.sha256(mot_de_passe.encode()).hexdigest()}\033[0m")
 
-        print(f"\033[2mdebug : ")
+        print(f"\033[2mdebug : all eleves : ")
         print(self.professeur.eleves)
         for eleve in self.professeur.eleves:
             print(eleve.nom_utilisateur, eleve.mot_de_passe)
@@ -258,13 +238,12 @@ def ActionForm(actions):
 
 def main():
     professeur = Professeur()
-    actions = {
-        '1': ('Mode Professeur', professeur.menu),
-        '2': ('Mode Élève', MenuEleve(professeur).menu),
-        '3': ('Quitter', professeur.quitter)
-    }
     while True:
-        ActionForm(actions)
+        ActionForm({
+            'p': ('Mode Professeur', professeur.menu),
+            'e': ('Mode Élève', MenuEleve(professeur).menu),
+            'q': ('Quitter', professeur.quitter)
+        })
 
 if __name__ == '__main__':
     main()
