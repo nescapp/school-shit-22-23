@@ -159,14 +159,14 @@ class MenuEleve:
         self.professeur = professeur
 
     def menu(self):
-        nom_utilisateur = input("Nom d'utilisateur : ")
-        mot_de_passe = input("Mot de passe : ")
+        print("Nom d'utilisateur : ", end="")
+        nom_utilisateur = input()
+        print("Mot de passe : ", end="")
+        mot_de_passe = hashlib.sha256(input().encode()).hexdigest()
         print(f"\033[2mdebug : nom_utilisateur (envoyé) : {nom_utilisateur}\033[0m")
         print(f"\033[2mdebug : mot_de_passe (envoyé) : {mot_de_passe}\033[0m")
         
-        
         eleve = self.trouver_eleve(nom_utilisateur, mot_de_passe)
-
 
         if eleve is None:
             print("Nom d'utilisateur ou mot de passe incorrect.")
@@ -199,7 +199,6 @@ class MenuEleve:
     def trouver_eleve(self, nom_utilisateur, mot_de_passe):
         print(f"\033[2mdebug : nom_utilisateur (recu) : {nom_utilisateur}\033[0m")
         print(f"\033[2mdebug : mot_de_passe (recu) : {mot_de_passe}\033[0m")
-        print(f"\033[2mdebug : expected hash : {hashlib.sha256(mot_de_passe.encode()).hexdigest()}\033[0m")
 
         print(f"\033[2mdebug : all eleves : ")
         print(self.professeur.eleves)
@@ -208,8 +207,8 @@ class MenuEleve:
         print("\033[0m")
         for eleve in self.professeur.eleves:
             print(f"\033[2mdebug : existing hash : {eleve.mot_de_passe}\033[0m")
-            print(f"\033[2mdebug : correct : {eleve.mot_de_passe == hashlib.sha256(mot_de_passe.encode()).hexdigest()}\033[0m")
-            if eleve.nom_utilisateur == nom_utilisateur and eleve.mot_de_passe == hashlib.sha256(mot_de_passe.encode()).hexdigest():
+            print(f"\033[2mdebug : correct : {eleve.mot_de_passe == mot_de_passe}\033[0m")
+            if eleve.nom_utilisateur == nom_utilisateur and eleve.mot_de_passe == mot_de_passe:
                 return eleve
         return None
 

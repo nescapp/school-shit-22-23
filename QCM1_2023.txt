@@ -1,8 +1,0 @@
-Numéro du QCM : 1
-Durée du QCM : 10
-Questions :
-1. test?
--x oui
--x oui
--x non
--> OUI
