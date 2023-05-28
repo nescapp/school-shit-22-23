@@ -95,38 +95,39 @@ def take_test():
                     for qcm in available_qcms:
                         print(qcm)
                     qcm_number = input("Enter the number of the QCM you want to take: ")
-                    if qcm_number not in available_qcms:
+                    if f"QCM{qcm_number}_{time.strftime('%Y')}.txt" not in available_qcms:
                         print("Invalid QCM number.")
                         return
                     qcm_file = f"QCM{qcm_number}_{time.strftime('%Y')}.txt"
-                    with open(qcm_file) as f:
-                        num_questions = int(f.readline().split(':')[1].strip())
-                        duration = int(f.readline().split(':')[1].strip().split()[0])
-                        questions = []
-                        for i in range(num_questions):
-                            text = f.readline().strip()[10:]
-                            answers = []
-                            for j in range(4):
-                                answer_text = f.readline().strip()[2:]
-                                correct = f.readline().startswith("->")
-                                answers.append({'text': answer_text, 'correct': correct})
-                            questions.append({'text': text, 'answers': answers})
-                    exam = Exam(qcm_number, username)
-                    start_time = time.time()
-                    for i, question in enumerate(questions):
-                        print(f"\nQuestion {i+1}: {question['text']}")
-                        for j, answer in enumerate(question['answers']):
-                            print(f"{j+1}. {answer['text']}")
-                        answer_number = int(input("Your answer: "))
-                        exam.add_answer(i+1, answer_number)
-                        if time.time() - start_time > duration * 60:
-                            print("Time's up!")
-                            exam.save_to_file()
-                            print("Exam saved to file.")
-                            return
-                    exam.save_to_file()
-                    print("Exam saved to file.")
-                    return
+                    # with open(qcm_file) as f:
+                    #     num_questions = int(f.readline().split(':')[1].strip())
+                    #     duration = int(f.readline().split(':')[1].strip().split()[0])
+                    #     questions = []
+                    #     for i in range(num_questions):
+                    #         text = f.readline().strip()[2:]
+                    #         answers = []
+                    #         for j in range(4):
+                    #             answer_text = f.readline().strip()[2:]
+                    #             correct = f.readline().startswith("->")
+                    #             answers.append({'text': answer_text, 'correct': correct})
+                    #         questions.append({'text': text, 'answers': answers})
+                    #     exam = Exam(qcm_number, username)
+                    #     start_time = time.time()
+                    #     for i, question in enumerate(questions):
+                    #         print(f"\nQuestion {i+1}: {question['text']}")
+                    #         for j, answer in enumerate(question['answers']):
+                    #             print(f"{j+1}. {answer['text']}")
+                    #         answer_number = int(input("Your answer: "))
+                    #         exam.add_answer(i+1, answer_number)
+                    #         if time.time() - start_time > duration * 60:
+                    #             print("Time's up!")
+                    #             exam.save_to_file()
+                    #             print("Exam saved to file.")
+                    #             return
+                    #     exam.save_to_file()
+                    #     print("Exam saved to file.")
+                    #     return
+                    print("not implemented yet")
                 else:
                     print("Incorrect password.")
                     return
